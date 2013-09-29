@@ -10,10 +10,10 @@ Turns the LED accordingly:
 
 ## Software deps
 
-[This](https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/) library should be installed (`gpio`)
+[This](https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/) library should be installed (`gpio`).
 
-## Hardware settings
+## Hardware setting
 
-Inspired from https://projects.drogon.net/raspberry-pi/gpio-examples/tux-crossing/2-two-more-leds/
+Inspired from [this project](https://projects.drogon.net/raspberry-pi/gpio-examples/tux-crossing/2-two-more-leds/)
 
 ![board](https://raw.github.com/loopasam/pi-monitor/master/board.jpg)
