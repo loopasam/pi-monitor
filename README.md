@@ -8,6 +8,10 @@ Turns the LED accordingly:
 - Orange: Warning - speed is below average
 - Red: THE INTERNET! WHAT'S GOING ON?
 
+## Software deps
+
+[This](https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/) library should be installed (`gpio`)
+
 ## Hardware settings
 
 Inspired from https://projects.drogon.net/raspberry-pi/gpio-examples/tux-crossing/2-two-more-leds/
