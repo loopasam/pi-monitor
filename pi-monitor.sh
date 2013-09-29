@@ -5,16 +5,42 @@ red=0
 yellow=1
 green=2
 
+# Stores the current LED on
+current=0
+
 # Stops all the lights and assigns correct mode for GPIO pins
 setup () {
   echo "Setting up..."
+  combo
   for i in $red $yellow $green ; do gpio mode  $i out ; done
   for i in $red $yellow $green ; do gpio write $i   0 ; done
 }
 
 # Turn-off all the LEDs
-clearled () {
-  for i in $red $yellow $green ; do gpio write $i   0 ; done
+turnOn () {
+  if [ $1 -ne $current ]; then
+  
+    # if internet was off and back again - then combo
+    if [ $current -eq 0 ]; then
+      combo
+    fi
+      
+    gpio write $current 0;
+    gpio write $1 1;
+    current=$1
+  fi
+}
+
+# Especiale combos
+combo() {
+  for i in $red $yellow $green ; do gpio write $i 0 ; done
+  for j in 0 1 2 3;
+    do for i in $red $yellow $green;
+      do gpio write  $i 1 ;
+      sleep 0.1 ;
+      gpio write  $i 0 ;
+    done
+  done
 }
 
 # Export the log as ZIP file on apache2 server
@@ -26,30 +52,29 @@ exportzip () {
 
 # Ping Google to know whether the Internet is working or not
 checkInternet () {
-  time=$(ping -c 1 173.194.34.148 | sed -nr 's|.*time=(.*)\..* ms$|\1|p')
+  time=$(ping -c 3 173.194.34.148 | sed -nr 's|.*=.*\/(.*)\..*\/.*\/.*$|\1|p')
+  #time=$(ping -c 1 173.194.34.148 | sed -nr 's|.*time=(.*)\..* ms$|\1|p')
   date=$(date)
   # echo $date, $time
-  clearled
+  # clearled
   # Checks the time and make a decision
   if [ "$time" == "" ]; then
     # echo "No internet!"
-    gpio write $red 1
-    time="0"
+    turnOn $red
+    time="100"
   else
     #Handles the light
-      if [[ $time -lt 35 ]]; then
-        # echo "fast regime"
-        gpio write $green 1
+      if [[ $time -lt 40 ]]; then
+        turnOn $green
       else
-        # echo "slow regime"
-        gpio write $yellow 1
+        turnOn $yellow
       fi
   fi
     
   # Write the report
   report="$date, $time"
   echo $report >> log.txt
-  sleep 15
+  sleep 2
 }
 
 
