@@ -5,39 +5,43 @@ red=0
 yellow=1
 green=2
 
-# Stops all the lights
+# Stops all the lights and assigns correct mode for GPIO pins
 setup () {
+  echo "Setting up..."
   for i in $red $yellow $green ; do gpio mode  $i out ; done
   for i in $red $yellow $green ; do gpio write $i   0 ; done
 }
 
+# Turn-off all the LEDs
 clearled () {
   for i in $red $yellow $green ; do gpio write $i   0 ; done
 }
 
+# Export the log as ZIP file on apache2 server
 exportzip () {
-  echo "exporting zip to apache..."
+  # echo "exporting zip to apache..."
   zip data log.txt
-  # cp data.zip /apache/repo
+  sudo cp data.zip /var/www/
 }
 
+# Ping Google to know whether the Internet is working or not
 checkInternet () {
   time=$(ping -c 1 173.194.34.148 | sed -nr 's|.*time=(.*)\..* ms$|\1|p')
   date=$(date)
-  echo $date, $time
+  # echo $date, $time
   clearled
   # Checks the time and make a decision
   if [ "$time" == "" ]; then
-    echo "No internet!"
+    # echo "No internet!"
     gpio write $red 1
     time="0"
   else
     #Handles the light
-      if [[ $time -lt 33 ]]; then
-        echo "fast regime"
+      if [[ $time -lt 35 ]]; then
+        # echo "fast regime"
         gpio write $green 1
       else
-        echo "slow regime"
+        # echo "slow regime"
         gpio write $yellow 1
       fi
   fi
@@ -45,7 +49,7 @@ checkInternet () {
   # Write the report
   report="$date, $time"
   echo $report >> log.txt
-  sleep 5
+  sleep 15
 }
 
 
@@ -54,11 +58,13 @@ checkInternet () {
 #	Checks the Internet and changes the LED output accordingly
 #######################################################################
 counter=0
+setup
 
 while true; do
   checkInternet
   counter=$[$counter+1]
-  if [[ $counter -eq 5 ]]; then
+  if [[ $counter -eq 240 ]]; then
+    # Export the zip file every hours
     exportzip
     counter=0
   fi
