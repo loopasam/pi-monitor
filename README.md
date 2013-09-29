@@ -14,6 +14,6 @@ Turns the LED accordingly:
 
 ## Hardware setting
 
-Inspired from [this project](https://projects.drogon.net/raspberry-pi/gpio-examples/tux-crossing/2-two-more-leds/)
+Inspired from [this project](https://projects.drogon.net/raspberry-pi/gpio-examples/tux-crossing/2-two-more-leds/).
 
 ![board](https://raw.github.com/loopasam/pi-monitor/master/board.jpg)
