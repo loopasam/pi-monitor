@@ -52,7 +52,7 @@ exportzip () {
 
 # Ping Google to know whether the Internet is working or not
 checkInternet () {
-  time=$(ping -c 2 173.194.34.148 | sed -nr 's|.*=.*\/(.*)\..*\/.*\/.*$|\1|p')
+  time=$(ping -c 2 8.8.8.8 | sed -nr 's|.*=.*\/(.*)\..*\/.*\/.*$|\1|p')
   #time=$(ping -c 1 173.194.34.148 | sed -nr 's|.*time=(.*)\..* ms$|\1|p')
   date=$(date)
   # echo $date, $time
@@ -74,7 +74,7 @@ checkInternet () {
   # Write the report
   report="$date, $time"
   echo $report >> log.txt
-  sleep 15
+  sleep 10
 }
 
 
