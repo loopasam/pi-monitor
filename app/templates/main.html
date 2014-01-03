@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+   <head>
+   <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+   <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="{{url_for('static', filename='Chart.min.js')}}"></script>
+      <title>R&pi; monitor</title>
+   </head>
+
+   <body>
+   <div class="container">
+      <div class="page-header">
+  <h1><embed height="75px" type="image/svg+xml" src="http://upload.wikimedia.org/wikipedia/en/c/cb/Raspberry_Pi_Logo.svg" /> R&pi; <small>monitor</small></h1>
+</div>
+
+        <h1><span class="fa fa-tachometer"></span> {{ temperature }} °</h1>
+      
+		<canvas class="text-center" id="canvas" height="250" width="800"></canvas>
+	<script>
+
+		var lineChartDefinition = {
+			labels : {{dates}},
+			datasets : [
+				{
+					fillColor : "rgba(220,220,220,0.5)",
+					strokeColor : "rgba(220,220,220,1)",
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					data : {{temperatures}}
+				}
+			]
+			
+		}
+
+  var options = {
+    animationSteps : 100
+  }
+  
+  var width = $(".container").width();
+  console.log(width);
+  $("#canvas").attr("width", width);
+  var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartDefinition, options);
+	
+	</script>
+     </div>
+   </body>
+</html>
+
